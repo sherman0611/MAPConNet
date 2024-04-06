@@ -4,7 +4,6 @@ import torch
 import numpy as np
 import pymesh
 from data.data_utils import data_list, face_reverse
-from data.augment_data import random_rotate
 
 class SMPL_DATA(data.Dataset):
     def __init__(self, opt, train, labelled=True):
