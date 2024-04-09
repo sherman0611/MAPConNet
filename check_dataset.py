@@ -35,4 +35,4 @@ if opt.use_unlabelled:
     dataloader_unlabelled = torch.utils.data.DataLoader(dataset_unlabelled, batch_size=opt.batchSize, shuffle=True, num_workers=int(opt.nThreads), drop_last=opt.isTrain)
     iter_data_unlabelled = iter(dataloader_unlabelled)
 
-print(iter_data)
+print(next(iter_data))
