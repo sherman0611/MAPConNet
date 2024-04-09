@@ -15,5 +15,37 @@ def random_rotate(mesh):
     rotated_vertices = np.dot(mesh.vertices, rotation_matrix[:3, :3].T)
 
     rotated_mesh = pymesh.form_mesh(rotated_vertices, mesh.faces)
+    
+    return rotated_mesh
 
-    pymesh.save_mesh('augmented_mesh.obj', rotated_mesh)
+def random_scale(mesh, min_scale=0.8, max_scale=1.2):
+    # generate random scaling factors for each axis
+    scales = np.random.uniform(low=min_scale, high=max_scale, size=3)
+
+    # apply scaling to vertices
+    scaled_vertices = mesh.vertices * scales.reshape(1, -1)
+
+    scaled_mesh = pymesh.form_mesh(scaled_vertices, mesh.faces)
+
+    return scaled_mesh
+
+def uniform_noise_corruption(mesh, noise_scale=0.01):
+    # generate random noise
+    noise = np.random.uniform(low=-noise_scale, high=noise_scale, size=mesh.vertices.shape)
+
+    # add noise to vertices
+    corrupted_vertices = mesh.vertices + noise
+
+    corrupted_mesh = pymesh.form_mesh(corrupted_vertices, mesh.faces)
+
+    return corrupted_mesh
+
+# augment mesh using all transformations
+def random_augmentations(mesh, min_scale=0.8, max_scale=1.2, noise_scale=0.01):
+    augmented_mesh = random_rotate(mesh)
+    augmented_mesh = random_scale(augmented_mesh, min_scale, max_scale)
+    augmented_mesh = uniform_noise_corruption(augmented_mesh, noise_scale)
+
+    pymesh.save_mesh('augmented_mesh.obj', augmented_mesh)
+
+    return augmented_mesh
