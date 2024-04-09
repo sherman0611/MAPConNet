@@ -50,9 +50,16 @@ for i, batch in enumerate(dataloader):
         sample = batch
         break
 
-# Printing the shape of the sample data
-print("Shape of the sample data:", sample.shape)
+# Printing the number of samples in the batch
+print("Number of samples in the batch:", len(sample))
 
-# Printing the content of the sample
-print("Content of the sample:")
-print(sample)
+# Displaying the content of each sample in the batch
+for i, data in enumerate(sample):
+    print(f"Sample {i + 1}:")
+    if isinstance(data, torch.Tensor):
+        print("Tensor shape:", data.shape)
+        print(data)
+    else:
+        print("Data type:", type(data))
+        print(data)
+    print()
