@@ -37,4 +37,6 @@ if opt.use_unlabelled:
 
 data = next(iter_data)
 print(data)
-print(data.shape)
+print("---------------------------------------------")
+for tensor in data:
+    print(tensor.shape)
