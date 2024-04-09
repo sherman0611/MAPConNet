@@ -7,6 +7,7 @@ from models.ver2ver_model import Ver2VerModel
 
 from data.human_data import SMPL_DATA
 from data.animal_data import SMAL_DATA
+from data.data_augment import random_rotate
 from tqdm import tqdm
 
 
