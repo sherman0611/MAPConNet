@@ -35,8 +35,24 @@ if opt.use_unlabelled:
     dataloader_unlabelled = torch.utils.data.DataLoader(dataset_unlabelled, batch_size=opt.batchSize, shuffle=True, num_workers=int(opt.nThreads), drop_last=opt.isTrain)
     iter_data_unlabelled = iter(dataloader_unlabelled)
 
-data = next(iter_data)
-print(data)
-print("---------------------------------------------")
-for tensor in data:
-    print(tensor.shape)
+# Calculate the total number of batches
+num_batches = len(dataloader)
+
+# Calculate the total number of data samples
+total_samples = num_batches * opt.batchSize
+
+print("Number of batches in the dataloader:", num_batches)
+print("Total number of data samples in the dataloader:", total_samples)
+
+# Iterate over the dataloader to get the first batch
+for i, batch in enumerate(dataloader):
+    if i == 0:
+        sample = batch
+        break
+
+# Printing the shape of the sample data
+print("Shape of the sample data:", sample.shape)
+
+# Printing the content of the sample
+print("Content of the sample:")
+print(sample)
