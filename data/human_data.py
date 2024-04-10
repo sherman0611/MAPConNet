@@ -117,7 +117,7 @@ class SMPL_DATA(data.Dataset):
 
         if self.opt.isTrain:
             if not self.opt.use_unlabelled:
-                return identity_points, pose_points, gt_points, new_id_faces, new_pose_faces
+                return identity_points, pose_points, gt_points, new_id_faces, new_pose_faces, random_sample
             return identity_points, pose_points, gt_points, new_id_faces, new_pose_faces, pose_points2
         elif not (self.train and self.opt.use_unlabelled):
             return identity_points, pose_points, (gt_points, gt_mesh_name), new_id_faces, new_pose_faces
