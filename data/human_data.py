@@ -100,7 +100,7 @@ class SMPL_DATA(data.Dataset):
         random_sample = random_sample2 = None
 
         # Before input, shuffle the vertices randomly to be close to real-world problems.
-        np.random.seed(1234)
+        # np.random.seed(1234)
         # random_sample = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
         # random_sample2 = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
         random_sample = random_sample2 = np.arange(6890)
@@ -110,12 +110,12 @@ class SMPL_DATA(data.Dataset):
         if self.train and self.opt.use_unlabelled:
             pose_points2 = pose_points2[random_sample2]
 
-        print("identity faces: ", identity_faces)
-        print("random sample: ", random_sample)
+        # print("identity faces: ", identity_faces)
+        # print("random sample: ", random_sample)
         
         new_id_faces = face_reverse(identity_faces, random_sample)
         new_pose_faces = face_reverse(pose_faces, random_sample2)
-        print("new id faces: ", new_id_faces)
+        # print("new id faces: ", new_id_faces)
 
         if self.opt.isTrain:
             if not self.opt.use_unlabelled:
