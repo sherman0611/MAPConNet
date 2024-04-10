@@ -9,7 +9,6 @@ from ver2ver_trainer import Ver2VerTrainer
 from options.train_options import TrainOptions
 from util.iter_counter import IterationCounter
 from util.util import print_current_errors
-from util.util import visualise_geometries, save_vis
 
 # parse options
 opt = TrainOptions().parse()
@@ -35,7 +34,7 @@ if opt.use_unlabelled:
     dataloader_unlabelled = torch.utils.data.DataLoader(dataset_unlabelled, batch_size=opt.batchSize, shuffle=True, num_workers=int(opt.nThreads), drop_last=opt.isTrain)
     iter_data_unlabelled = iter(dataloader_unlabelled)
 
-visualise_geometries(dataset[0][0], dataset[0][3])
+pymesh.save_mesh_raw("test.obj", dataset[0][0], dataset[0][3])
 
 # # Calculate the total number of batches
 # num_batches = len(dataloader)
