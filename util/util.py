@@ -133,3 +133,97 @@ def calc_mean_std(feat, eps=1e-5):
     feat_std = feat_var.sqrt().view(N, C, 1)
     feat_mean = feat.view(N, C, -1).mean(dim=2).view(N, C, 1)
     return feat_mean, feat_std
+
+def visualise_geometries(meshes, faces=None, colors=None, names=None, save=False, save_dir=None, dataset_mode='human', angle=None, paper_order=False, zooms=None):
+    import open3d as o3d
+
+    if dataset_mode == 'human':
+        gap = 1.3
+        rot_mat = np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])
+    else:
+        gap = 2.5
+        rot_mat = np.array([[1, 0, 0], [0, 0, 1], [0, -1, 0]])
+
+    if angle is not None:
+        angle_ = angle * np.pi / 180
+        rot_mat_new = np.array([[np.cos(angle_), 0, np.sin(angle_)], [0, 1, 0], [-np.sin(angle_), 0, np.cos(angle_)]])
+        rot_mat = np.dot(rot_mat_new, rot_mat)
+
+    geometries = []
+    for i, points in enumerate(meshes):
+        displacement = [[gap * (i + 1), 0, 0]] if (save_dir is None) else 0
+        points = np.dot(points, rot_mat.T)
+        if (faces is not None and faces[i] is not None):
+            geometry = o3d.geometry.TriangleMesh()
+            geometry.vertices = o3d.utility.Vector3dVector(points + displacement)
+            geometry.triangles = o3d.utility.Vector3iVector(deepcopy(faces[i]))
+            geometry.compute_vertex_normals()
+        else:
+            geometry = o3d.geometry.PointCloud()
+            geometry.points = o3d.utility.Vector3dVector(points + displacement)
+            if colors is not None and colors[i] is not None:
+                geometry.colors = o3d.utility.Vector3dVector(colors[i])
+            else:
+                geometry.colors = o3d.utility.Vector3dVector(np.ones(points.shape) * 0.7)
+        if save_dir is not None:
+            os.makedirs(save_dir, exist_ok=True)
+            name = names[i]
+            if angle is not None:
+                name += f'_{angle}'
+            zoom = zooms[i] if zooms is not None else None
+            save_vis(geometry, name, save_dir, dataset_mode, zoom)
+        else:
+            geometries.append(geometry)
+    if save_dir is None:
+        o3d.visualization.draw_geometries(geometries)
+    else:
+        for group in ['points', 'mesh']:
+            imgs = []
+            suffix = '.jpg' if group == 'points' else '_mesh.jpg'
+            for n in names:
+                img_p = os.path.join(save_dir, n + suffix)
+                if os.path.exists(img_p):
+                    if paper_order:
+                        imgs.append(cv2.imread(img_p))
+                    else:
+                        imgs.append(Image.open(img_p))
+
+            if len(imgs) > 0:
+                fpath = os.path.join(save_dir, os.path.basename(save_dir) + suffix)
+                if paper_order:
+                    top = 100
+                    bottom = 900
+                    out_img = np.concatenate([img[top:bottom] for img in imgs], axis=1)
+                    cv2.imwrite(fpath, out_img)
+                else:
+                    out_w = sum([img.size[0] for img in imgs])
+                    out_h = max([img.size[1] for img in imgs])
+                    out_img = Image.new('RGB', (out_w, out_h))
+                    out_img.paste(imgs[0], (0, 0))
+                    start = imgs[0].size[0]
+                    for i, img in enumerate(imgs[1:]):
+                        out_img.paste(img, (start, 0))
+                        start += img.size[0]
+                    out_img.save(fpath)
+
+def save_vis(mesh, path, save_dir, dataset_mode, zoom):
+    import open3d as o3d
+
+    if dataset_mode == 'human':
+        w, h = 700, 1000
+    elif dataset_mode == 'animal':
+        w, h = 1000, 1000
+
+    if 'Mesh' in type(mesh).__name__:
+        path += '_mesh'
+    vis = o3d.visualization.Visualizer()
+    vis.create_window(width=w, height=h)
+    vis.add_geometry(mesh)
+    if zoom is not None:
+        ctr = vis.get_view_control()
+        ctr.set_zoom(zoom)
+    vis.update_geometry(mesh)
+    vis.poll_events()
+    vis.update_renderer()
+    vis.capture_screen_image(os.path.join(save_dir, path + '.jpg'))
+    vis.destroy_window()

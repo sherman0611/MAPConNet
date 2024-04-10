@@ -9,7 +9,7 @@ from ver2ver_trainer import Ver2VerTrainer
 from options.train_options import TrainOptions
 from util.iter_counter import IterationCounter
 from util.util import print_current_errors
-
+from util.util import visualise_geometries
 
 # parse options
 opt = TrainOptions().parse()

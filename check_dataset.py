@@ -9,7 +9,7 @@ from ver2ver_trainer import Ver2VerTrainer
 from options.train_options import TrainOptions
 from util.iter_counter import IterationCounter
 from util.util import print_current_errors
-
+from util.util import visualise_geometries, save_vis
 
 # parse options
 opt = TrainOptions().parse()
@@ -35,31 +35,34 @@ if opt.use_unlabelled:
     dataloader_unlabelled = torch.utils.data.DataLoader(dataset_unlabelled, batch_size=opt.batchSize, shuffle=True, num_workers=int(opt.nThreads), drop_last=opt.isTrain)
     iter_data_unlabelled = iter(dataloader_unlabelled)
 
-# Calculate the total number of batches
-num_batches = len(dataloader)
+visualise_geometries(dataset[0][0], dataset[0][3])
 
-# Calculate the total number of data samples
-total_samples = num_batches * opt.batchSize
+# # Calculate the total number of batches
+# num_batches = len(dataloader)
 
-print("Number of batches in the dataloader:", num_batches)
-print("Total number of data samples in the dataloader:", total_samples)
+# # Calculate the total number of data samples
+# total_samples = num_batches * opt.batchSize
 
-# Iterate over the dataloader to get the first batch
-for i, batch in enumerate(dataloader):
-    if i == 0:
-        sample = batch
-        break
+# print("Number of batches in the dataloader:", num_batches)
+# print("Total number of data samples in the dataloader:", total_samples)
 
-# Printing the number of samples in the batch
-print("Number of samples in the batch:", len(sample))
+# # Iterate over the dataloader to get the first batch
+# for i, batch in enumerate(dataloader):
+#     if i == 0:
+#         sample = batch
+#         break
 
-# Displaying the content of each sample in the batch
-for i, data in enumerate(sample):
-    print(f"Sample {i + 1}:")
-    if isinstance(data, torch.Tensor):
-        print("Tensor shape:", data.shape)
-        print(data)
-    else:
-        print("Data type:", type(data))
-        print(data)
-    print()
+# # Printing the number of samples in the batch
+# print("Number of samples in the batch:", len(sample))
+
+# # Displaying the content of each sample in the batch
+# for i, data in enumerate(sample):
+#     visualise_geometries(data)
+#     print(f"Sample {i + 1}:")
+#     if isinstance(data, torch.Tensor):
+#         print("Tensor shape:", data.shape)
+#         print(data)
+#     else:
+#         print("Data type:", type(data))
+#         print(data)
+#     print()
