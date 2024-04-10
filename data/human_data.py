@@ -100,6 +100,7 @@ class SMPL_DATA(data.Dataset):
         random_sample = random_sample2 = None
 
         # Before input, shuffle the vertices randomly to be close to real-world problems.
+        np.random.seed(1234)
         random_sample = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
         random_sample2 = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
         # random_sample = random_sample2 = np.arange(6890)
