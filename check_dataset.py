@@ -16,8 +16,6 @@ opt = TrainOptions().parse()
 # print options to help debugging
 print(' '.join(sys.argv))
 
-np.random.seed(1234)
-
 # load the dataset
 if opt.dataset_mode == 'human':
     dataset = SMPL_DATA(opt, True)
