@@ -100,8 +100,9 @@ class SMPL_DATA(data.Dataset):
         random_sample = random_sample2 = None
 
         # Before input, shuffle the vertices randomly to be close to real-world problems.
-        random_sample = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
-        random_sample2 = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
+        # random_sample = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
+        # random_sample2 = np.random.choice(self.vertex_num,size=self.vertex_num,replace=False)
+        random_sample = random_sample2 = np.arange(6890)
         pose_points = pose_points[random_sample2]
         identity_points = identity_points[random_sample]
         gt_points = gt_points[random_sample]
