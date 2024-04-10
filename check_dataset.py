@@ -2,6 +2,7 @@ import os
 import sys
 import pymesh
 import torch
+import numpy as np
 
 from data.human_data import SMPL_DATA
 from data.animal_data import SMAL_DATA
@@ -14,6 +15,8 @@ from util.util import print_current_errors
 opt = TrainOptions().parse()
 # print options to help debugging
 print(' '.join(sys.argv))
+
+np.random.seed(1234)
 
 # load the dataset
 if opt.dataset_mode == 'human':
