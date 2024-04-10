@@ -18,6 +18,8 @@ print(' '.join(sys.argv))
 # load the dataset
 if opt.dataset_mode == 'human':
     dataset = SMPL_DATA(opt, True)
+    sample = dataset[0]
+    import pdb; pdb.set_trace()
     if opt.use_unlabelled:
         dataset_unlabelled = SMPL_DATA(opt, True, False)
 elif opt.dataset_mode == 'animal':
