@@ -34,7 +34,9 @@ if opt.use_unlabelled:
     dataloader_unlabelled = torch.utils.data.DataLoader(dataset_unlabelled, batch_size=opt.batchSize, shuffle=True, num_workers=int(opt.nThreads), drop_last=opt.isTrain)
     iter_data_unlabelled = iter(dataloader_unlabelled)
 
-pymesh.save_mesh_raw("test.obj", dataset[0][0], dataset[0][3])
+sample = dataset[0]
+
+# pymesh.save_mesh_raw("test.obj", dataset[0][0], dataset[0][3])
 
 # # Calculate the total number of batches
 # num_batches = len(dataloader)
