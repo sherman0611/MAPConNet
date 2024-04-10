@@ -109,11 +109,11 @@ class SMPL_DATA(data.Dataset):
         if self.train and self.opt.use_unlabelled:
             pose_points2 = pose_points2[random_sample2]
 
-        print(identity_faces)
+        print("identity faces: ", identity_faces)
         
         new_id_faces = face_reverse(identity_faces, random_sample)
         new_pose_faces = face_reverse(pose_faces, random_sample2)
-        print(new_id_faces)
+        print("new id faces: ", new_id_faces)
 
         if self.opt.isTrain:
             if not self.opt.use_unlabelled:
